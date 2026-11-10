@@ -1,0 +1,6 @@
+ "use client";
+import { useState } from "react";
+export default function Login(){const [email,setEmail]=useState("");const [password,setPassword]=useState("");const [error,setError]=useState("");const [busy,setBusy]=useState(false);
+async function submit(e){e.preventDefault();setBusy(true);setError("");const r=await fetch("/api/admin/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({email,password})});const j=await r.json();if(r.ok)location.href="/admin";else{setError(j.error||"Login failed");setBusy(false);}}
+return <div className="login-card"><div className="brand">Bharat Tech Solutions<small>OWNER ACCESS</small></div><h1 style={{font:"800 28px Manrope"}}>Welcome back.</h1><p className="muted">Sign in to manage your shop.</p><form onSubmit={submit}><div className="field"><label>Email</label><input type="email" autoComplete="username" required value={email} onChange={e=>setEmail(e.target.value)}/></div><div className="field"><label>Password</label><input type="password" autoComplete="current-password" required value={password} onChange={e=>setPassword(e.target.value)}/></div>{error&&<div className="notice">{error}</div>}<button disabled={busy} style={{width:"100%"}}>{busy?"Signing in...":"Sign in"}</button></form></div>;
+}
